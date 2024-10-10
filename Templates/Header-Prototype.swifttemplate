@@ -1,8 +1,6 @@
 // Generated with SwiftyPrototype 4.2.0
-// Required Sourcery: 1.8.0
+// Required Sourcery: 2.2.5
 
 <%_ for rule in swiftLintRules(argument) { -%>
     <%_ %><%= rule %>
 <%_ } -%>
-
-import SwiftyPrototype

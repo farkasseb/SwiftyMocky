@@ -35,11 +35,15 @@ public extension LegacyConfiguration {
 
         // Legacy from very old version of swifty mocky, needs for migration
         public var `import`: [String]?
+        public var publicImport: [String]?
         public var testable: [String]?
+        public var publicTestable: [String]?
     }
 
     struct Configuration: Codable {
         public var `import`: [String]?
+        public var publicImport: [String]?
         public var testable: [String]?
+        public var publicTestable: [String]?
     }
 }

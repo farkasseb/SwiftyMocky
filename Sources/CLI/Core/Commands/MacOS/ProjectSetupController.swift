@@ -145,7 +145,9 @@ public class ProjectSetupController {
             output: output,
             targets: [target.name],
             testable: testable.sorted(),
+            publicTestable: [],
             import: imports.sorted(),
+            publicImport: [],
             prototype: false,
             sourcery: []
         )

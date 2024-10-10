@@ -10,7 +10,9 @@ public struct MockConfiguration {
     public var output: String
     public var targets: [String]
     public var testable: [String]
+    public var publicTestable: [String]
     public var `import`: [String]
+    public var publicImport: [String]
     public var prototype: Bool
     public var sourcery: [String]
     public var template: String?
@@ -25,7 +27,9 @@ extension MockConfiguration: Codable {
         case output
         case targets
         case testable
+        case publicTestable
         case `import` = "import"
+        case publicImport
         case prototype
         case sourcery
         case template
@@ -38,7 +42,9 @@ extension MockConfiguration: Codable {
         output = try container.decode(.output)
         targets = (try? container.decode([String].self, forKey: .targets)) ?? []
         testable = (try? container.decode([String].self, forKey: .testable)) ?? []
+        publicTestable = (try? container.decode([String].self, forKey: .publicTestable)) ?? []
         `import` = (try? container.decode([String].self, forKey: .import)) ?? []
+        publicImport = (try? container.decode([String].self, forKey: .publicImport)) ?? []
         prototype = (try? container.decode(Bool.self, forKey: .prototype)) ?? false
         sourcery = (try? container.decode([String].self, forKey: .sourcery)) ?? []
         template = try? container.decode(.template)
@@ -53,7 +59,9 @@ extension MockConfiguration: Codable {
         // Optional
         self.targets.isEmpty ? () : try container.encode(self.targets, forKey: .targets)
         self.testable.isEmpty ? () : try container.encode(self.testable, forKey: .testable)
+        self.publicTestable.isEmpty ? () : try container.encode(self.publicTestable, forKey: .publicTestable)
         self.import.isEmpty ? () : try container.encode(self.import, forKey: .import)
+        self.publicImport.isEmpty ? () : try container.encode(self.publicImport, forKey: .publicImport)
         self.prototype ? try container.encode(true, forKey: .targets) : ()
         self.sourcery.isEmpty ? () : try container.encode(self.sourcery, forKey: .sourcery)
         self.template == nil ? () : try container.encode(self.template, forKey: .template)
@@ -70,7 +78,9 @@ public extension MockConfiguration {
         self.sources = config.sources.sorted()
         self.output = config.output
         self.testable = (config.args?.testable ?? config.args?.swiftyMocky?.testable ?? []).sorted()
+        self.publicTestable = (config.args?.publicTestable ?? config.args?.swiftyMocky?.publicTestable ?? []).sorted()
         self.import = (config.args?.import ?? config.args?.swiftyMocky?.import ?? []).sorted()
+        self.publicImport = (config.args?.publicImport ?? config.args?.swiftyMocky?.publicImport ?? []).sorted()
         self.targets = [] // TODO: Resolve targets
         self.prototype = false
         self.sourcery = []
@@ -91,10 +101,14 @@ public extension MockConfiguration {
             args: LegacyConfiguration.Arguments(
                 swiftyMocky: LegacyConfiguration.Configuration(
                     import: `import`,
-                    testable: testable
+                    publicImport: publicImport,
+                    testable: testable,
+                    publicTestable: publicTestable
                 ),
                 import: nil,
-                testable: nil
+                publicImport: nil,
+                testable: nil,
+                publicTestable: nil
             )
         )
     }

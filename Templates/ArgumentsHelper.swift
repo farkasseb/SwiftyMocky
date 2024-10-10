@@ -5,7 +5,7 @@ func swiftLintRules(_ arguments: [String: Any]) -> [String] {
 }
 
 func projectImports(_ arguments: [String: Any]) -> [String] {
-    return imports(arguments) + testableImports(arguments)
+    return imports(arguments) + publicImports(arguments) + testableImports(arguments) + publicTestableImports(arguments)
 }
 
 func imports(_ arguments: [String: Any]) -> [String] {
@@ -13,9 +13,19 @@ func imports(_ arguments: [String: Any]) -> [String] {
         .map { return "import \($0)" }
 }
 
+func publicImports(_ arguments: [String: Any]) -> [String] {
+    return stringArray(fromArguments: arguments, forKey: "publicImport")
+        .map { return "public import \($0)" }
+}
+
 func testableImports(_ arguments: [String: Any]) -> [String] {
     return stringArray(fromArguments: arguments, forKey: "testable")
         .map { return "@testable import \($0)" }
+}
+
+func publicTestableImports(_ arguments: [String: Any]) -> [String] {
+    return stringArray(fromArguments: arguments, forKey: "publicTestable")
+        .map { return "@testable public import \($0)" }
 }
 
 /// [Internal] Get value from dictionary

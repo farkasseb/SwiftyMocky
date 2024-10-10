@@ -7,7 +7,7 @@ func swiftLintRules(_ arguments: [String: Any]) -> [String] {
 }
 
 func projectImports(_ arguments: [String: Any]) -> [String] {
-    return imports(arguments) + testableImports(arguments)
+    return imports(arguments) + publicImports(arguments) + testableImports(arguments) + publicTestableImports(arguments)
 }
 
 func imports(_ arguments: [String: Any]) -> [String] {
@@ -15,9 +15,19 @@ func imports(_ arguments: [String: Any]) -> [String] {
         .map { return "import \($0)" }
 }
 
+func publicImports(_ arguments: [String: Any]) -> [String] {
+    return stringArray(fromArguments: arguments, forKey: "publicImport")
+        .map { return "public import \($0)" }
+}
+
 func testableImports(_ arguments: [String: Any]) -> [String] {
     return stringArray(fromArguments: arguments, forKey: "testable")
         .map { return "@testable import \($0)" }
+}
+
+func publicTestableImports(_ arguments: [String: Any]) -> [String] {
+    return stringArray(fromArguments: arguments, forKey: "publicTestable")
+        .map { return "@testable public import \($0)" }
 }
 
 /// [Internal] Get value from dictionary
@@ -38,14 +48,12 @@ func stringArray(fromArguments arguments: [String: Any], forKey key: String) -> 
 }
 _%>
 // Generated with SwiftyMocky 4.2.0
-// Required Sourcery: 1.8.0
+// Required Sourcery: 2.2.5
 
 <%_ for rule in swiftLintRules(argument) { -%>
     <%_ %><%= rule %>
 <%_ } -%>
 
-import SwiftyMocky
-import XCTest
 <%# ================================================== IMPORTS -%><%_ -%>
     <%_ for projectImport in projectImports(argument) { -%>
         <%_ %><%= projectImport %>
